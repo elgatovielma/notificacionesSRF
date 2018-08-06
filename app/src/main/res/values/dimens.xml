@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margen_titulo">150dp</dimen>
+    <dimen name="tamaño_titulo_bienvenida">60sp</dimen>
+    <dimen name="tamaño_bienvenida2">25sp</dimen>
+    <dimen name="margen_bienvenida2">50sp</dimen>
+    <dimen name="titulos">15dp</dimen>
+    <dimen name="margin_top_imagen">15dp</dimen>
+    <dimen name="margin_top_emotitulo">10dp</dimen>
+    <dimen name="size_emotitulo">25sp</dimen>
+    <dimen name="margin_right_imagen">10dp</dimen>
+    <dimen name="margin_botton_descripcion">15dp</dimen>
+    <dimen name="margin_right_descripcion">10dp</dimen>
+    <dimen name="margin_top_separacion">11dp</dimen>
+</resources>
