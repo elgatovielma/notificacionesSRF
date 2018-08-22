@@ -20,6 +20,7 @@ public class historialOpenHelper extends SQLiteOpenHelper {
 
     // Column names...
     public static final String KEY_ID = "_id";
+    public static final String KEY_MESSAGE = "message";
     public static final String KEY_DAY = "day";
     public static final String KEY_HOUR = "hour";
 
@@ -27,10 +28,11 @@ public class historialOpenHelper extends SQLiteOpenHelper {
     private static final String[] COLUMNS = { KEY_ID,KEY_HOUR,KEY_DAY};
 
     private static final  String HISTORIAL_TABLE_CREATE =
-            "CREATE TABLE " + HISTORIAL_LIST_TABLE + " ("
-            +  KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + KEY_HOUR + " TEXT NOT NULL, "
-            + KEY_DAY + " TEXT NOT NULL);";
+                    "CREATE TABLE " + HISTORIAL_LIST_TABLE + " ("
+                    +  KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + KEY_MESSAGE + " TEXT NOT NULL, "
+                    + KEY_HOUR + " TEXT NOT NULL, "
+                    + KEY_DAY + " TEXT NOT NULL);";
 
     private SQLiteDatabase mWritableDB;
     private SQLiteDatabase mReadableDB;
@@ -72,6 +74,7 @@ public class historialOpenHelper extends SQLiteOpenHelper {
 
 
             entry.setId(cursor.getInt(cursor.getColumnIndex(KEY_ID)));
+            entry.setMensaje(cursor.getString(cursor.getColumnIndex(KEY_MESSAGE)));
             entry.setFecha(cursor.getString(cursor.getColumnIndex(KEY_DAY)));
             entry.setHora(cursor.getString(cursor.getColumnIndex(KEY_HOUR)));
             Log.d(TAG,"SET HOUR: " + cursor.getString(cursor.getColumnIndex(KEY_HOUR)));
@@ -87,12 +90,13 @@ public class historialOpenHelper extends SQLiteOpenHelper {
         }
     }
 
-    public long insert(String[] informacion){
+    public long insert(String[] informacion, String infoTitulo){
 
         long newId = 0;
 
         ContentValues values = new ContentValues();
 
+        values.put(KEY_MESSAGE,infoTitulo);
         values.put(KEY_DAY, informacion[0]);
         values.put(KEY_HOUR, informacion[1]);
 

@@ -16,7 +16,7 @@ import java.util.Date;
 public class FirebaseMessagingService extends
         com.google.firebase.messaging.FirebaseMessagingService {
 
-    public static final int WORD_ADD = -1;
+    private String mensajeAlerta = "Una persona no identificada utilizo el sistema";
 
 
     @Override
@@ -39,27 +39,66 @@ public class FirebaseMessagingService extends
         Intent i = new Intent(this,notificacionesHistorial.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        i.putExtra("Mew",informacion);
+
+        String titulo;
+
+        if(message.contains(mensajeAlerta)) {
+
+            titulo = "Alerta de seguridad!";
+
+            i.putExtra("Mew", informacion);
+            i.putExtra("Mewtwo",titulo);
 
 
+            PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                    0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                0,i,PendingIntent.FLAG_UPDATE_CURRENT);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                    .setAutoCancel(true)
+                    .setContentTitle("Alerta de seguridad!")
+                    .setContentText(message)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                    .setSmallIcon(R.drawable.if_securitycamera_531907)
+                    .setPriority(Notification.PRIORITY_HIGH)
+                    .setDefaults(Notification.DEFAULT_SOUND)
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setContentIntent(pendingIntent);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setAutoCancel(true)
-                .setContentTitle("Alerta de seguridad!")
-                .setContentText(message)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
-                .setSmallIcon(R.drawable.if_securitycamera_531907)
-                .setPriority(Notification.PRIORITY_HIGH)
-                .setDefaults(Notification.DEFAULT_SOUND)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setContentIntent(pendingIntent);
+            NotificationManager manager = (NotificationManager)
+                    getSystemService(NOTIFICATION_SERVICE);
 
-        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            manager.notify(0,builder.build());
+        }
+        else{
 
-        manager.notify(0,builder.build());
+            titulo = "Ingreso de usuario identificado";
+
+            i.putExtra("Mew", informacion);
+            i.putExtra("Mewtwo",titulo);
+
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                    0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                    .setAutoCancel(true)
+                    .setContentTitle("Usuario verificado")
+                    .setContentText(message)
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                    .setSmallIcon(R.drawable.if_securitycamera_531907)
+                    .setPriority(Notification.PRIORITY_MIN)
+                    .setDefaults(Notification.DEFAULT_SOUND)
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setContentIntent(pendingIntent);
+
+            NotificationManager manager = (NotificationManager)
+                    getSystemService(NOTIFICATION_SERVICE);
+
+            manager.notify(0,builder.build());
+
+        }
+
+
     }
 
     private String creacionTiempo() {

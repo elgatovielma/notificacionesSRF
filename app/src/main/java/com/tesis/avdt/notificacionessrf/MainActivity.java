@@ -84,9 +84,16 @@ public class MainActivity extends AppCompatActivity
         String infoPassword = password.getText().toString().trim();
 
         request = Volley.newRequestQueue(this);
+
         String url = "http://192.168.1.4/pruebaBD/JSONConsulta.php?"
                 + "last_name="+infoPassword
                 +"&first_name="+infoUser;
+
+        /*
+        String url = "http://192.168.1.11/tesis/JSONConsulta.php?"
+                + "clave="+infoPassword
+                +"&user="+infoUser;*/
+
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,
                 null,this,this);
@@ -100,9 +107,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onResponse(JSONObject response) {
-        SystemClock.sleep(2000);
+        SystemClock.sleep(1000);
+
         progreso.hide();
 
+        //JSONArray json = response.optJSONArray("empleados");
         JSONArray json = response.optJSONArray("employees");
         JSONObject jsonObject;
 
@@ -110,8 +119,8 @@ public class MainActivity extends AppCompatActivity
             jsonObject = json.getJSONObject(0);
 
             int idConsultado = jsonObject.optInt("id");
-            String userConsultado = jsonObject.optString("first_name");
-            String passwordConsultado = jsonObject.optString("last_name");
+            //String userConsultado = jsonObject.optString("first_name");
+            //String passwordConsultado = jsonObject.optString("last_name");
 
             if (idConsultado == 0){
                 Toast.makeText(getBaseContext(),

@@ -47,6 +47,7 @@ public class notificacionesHistorial extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         String[] informacion;
+        String infoTitulo;
 
         Intent in = getIntent();
         Bundle extra = in.getExtras();
@@ -55,7 +56,8 @@ public class notificacionesHistorial extends AppCompatActivity {
             Log.d("TEMP", "SALUT ");
 
             informacion = extra.getStringArray("Mew");
-            mDB.insert(informacion);
+            infoTitulo = extra.getString("Mewtwo");
+            mDB.insert(informacion,infoTitulo);
             mAdapter.notifyDataSetChanged();
         }
 
@@ -67,11 +69,13 @@ public class notificacionesHistorial extends AppCompatActivity {
         super.onNewIntent(intent);
         Bundle extras = intent.getExtras();
         String[] info;
+        String infoTitulo;
         Log.d("TEMP", "BONJOUR ");
         if(extras != null) {
             info = extras.getStringArray("Mew");
+            infoTitulo = extras.getString("Mewtwo");
 
-            mDB.insert(info);
+            mDB.insert(info,infoTitulo);
             mAdapter.notifyDataSetChanged();
 
             Log.d("TEMP", "Tab Number: " + info[0]);

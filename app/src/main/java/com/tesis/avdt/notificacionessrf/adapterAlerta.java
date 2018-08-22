@@ -53,6 +53,8 @@ public class adapterAlerta extends RecyclerView.Adapter<adapterAlerta.ViewHolder
         holder.fechaItemView.setText(current.getFecha());
         holder.horaItemView.setText(current.getHora());
 
+        holder.alertaItemView.setText(current.getMensaje());
+
         holder.iconoItemView.setOnClickListener(
                 new MyButtonOnClickListener(current.getId(), null) {
                     @Override
@@ -123,14 +125,14 @@ public class adapterAlerta extends RecyclerView.Adapter<adapterAlerta.ViewHolder
 
     public class ViewHolderAlertas extends RecyclerView.ViewHolder {
 
-        public final TextView fechaItemView, horaItemView;
+        public final TextView fechaItemView, horaItemView, alertaItemView;
         public final ImageView iconoItemView;
 
 
         public ViewHolderAlertas(View itemView) {
             super(itemView);
 
-
+            alertaItemView = itemView.findViewById(R.id.alertatexto);
             fechaItemView = itemView.findViewById(R.id.fechafinalizacion);
             horaItemView = itemView.findViewById(R.id.horafinalizacion);
             iconoItemView = itemView.findViewById(R.id.idImagen);

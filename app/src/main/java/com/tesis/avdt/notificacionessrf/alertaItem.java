@@ -3,6 +3,7 @@ package com.tesis.avdt.notificacionessrf;
 public class alertaItem {
 
     private int id;
+    private String mensaje;
     private String fecha;
     private String hora;
     private int foto;
@@ -15,6 +16,14 @@ public class alertaItem {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
     }
 
     public String getFecha() {

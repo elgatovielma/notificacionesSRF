@@ -34,6 +34,7 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
         String url ="http://192.168.1.4/pruebaBD/FCMregister.php?Token="+token;
+        //String url ="http://192.168.1.11/tesis/FCMregister.php?Token="+token;
 
         // Request a string response from the provided URL.
         StringRequest stringRequest =
