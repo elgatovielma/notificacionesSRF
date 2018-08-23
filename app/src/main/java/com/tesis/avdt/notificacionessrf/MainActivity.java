@@ -84,15 +84,15 @@ public class MainActivity extends AppCompatActivity
         String infoPassword = password.getText().toString().trim();
 
         request = Volley.newRequestQueue(this);
-
+        /*
         String url = "http://192.168.1.4/pruebaBD/JSONConsulta.php?"
                 + "last_name="+infoPassword
-                +"&first_name="+infoUser;
+                +"&first_name="+infoUser;*/
 
-        /*
+
         String url = "http://192.168.1.11/tesis/JSONConsulta.php?"
                 + "clave="+infoPassword
-                +"&user="+infoUser;*/
+                +"&user="+infoUser;
 
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,
@@ -111,8 +111,8 @@ public class MainActivity extends AppCompatActivity
 
         progreso.hide();
 
-        //JSONArray json = response.optJSONArray("empleados");
-        JSONArray json = response.optJSONArray("employees");
+        JSONArray json = response.optJSONArray("empleados");
+        //JSONArray json = response.optJSONArray("employees");
         JSONObject jsonObject;
 
         try {
