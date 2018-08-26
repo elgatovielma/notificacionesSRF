@@ -38,6 +38,18 @@
         </activity> <meta-data android:name="firebase_messaging_auto_init_enabled"
         android:value="false" />
 
+        <receiver
+            android:name=".MyAlarmReceiver"
+            android:process=":remote" >
+            <intent-filter>
+                <action android:name="com.example.android.standup.ACTION_NOTIFY" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".MyLoopjTask"
+            android:exported="false" />
+
     </application>
 
 </manifest>
