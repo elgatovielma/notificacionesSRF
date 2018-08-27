@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.tesis.avdt.notificacionessrf.notificacionesHistorial">
     <item
+        android:id="@+id/actualizar"
+        android:orderInCategory="100"
+        android:title="Actualizar"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/cerrar_sesion"
         android:orderInCategory="100"
         android:title="Cerrar Sesion"

@@ -13,7 +13,7 @@ public class MyAlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-       /* Intent i = new Intent(context, MyLoopjTask.class);
+        Intent i = new Intent(context, MyLoopjTask.class);
         // Add extras to the bundle
 
         Bundle extra = intent.getExtras();
@@ -26,10 +26,11 @@ public class MyAlarmReceiver extends BroadcastReceiver {
         }
 
         // Start the service
-        context.startService(i);*/
-        Log.d("BROADCASTRECEIVE", "BROADCAST ENTRA");
-        Intent i = new Intent(context, MyLoopjTask.class);
-        i.putExtra("foo", "bar");
         context.startService(i);
+        Log.d("BROADCASTRECEIVE", "BROADCAST ENTRA");
+        /*Intent i = new Intent(context, MyLoopjTask.class);
+        i.putExtra("foo", "bar");
+        context.startService(i); */
+
     }
 }
