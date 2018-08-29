@@ -3,7 +3,7 @@ package com.tesis.avdt.notificacionessrf;
 import android.app.AlertDialog;
 import android.view.View;
 
-public class MyButtonOnClickListener implements View.OnClickListener, View.OnLongClickListener {
+public class MyButtonOnClickListener implements View.OnClickListener{
 
     int id;
     String word;
@@ -17,8 +17,4 @@ public class MyButtonOnClickListener implements View.OnClickListener, View.OnLon
         // Implemented adapterAlerta
     }
 
-    @Override
-    public boolean onLongClick(View v) {
-        return true;
-    }
 }

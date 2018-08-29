@@ -31,14 +31,12 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+
 
 public class MainActivity extends AppCompatActivity
         implements  Response.Listener<JSONObject>, Response.ErrorListener{
@@ -61,7 +59,6 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FirebaseMessaging.getInstance().setAutoInitEnabled(false);
 
         logeo = getSharedPreferences("login",MODE_PRIVATE);
         if(logeo.getBoolean("logged",false)){
@@ -155,6 +152,8 @@ public class MainActivity extends AppCompatActivity
                  Toast.makeText(getBaseContext(),
                          message, Toast.LENGTH_SHORT).show();
              }
+
+
 
     private void MyAlarmManagerStart() {
         // Construct an intent that will execute the AlarmReceiver

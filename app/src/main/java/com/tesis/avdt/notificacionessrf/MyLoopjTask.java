@@ -18,6 +18,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -33,7 +34,7 @@ public class MyLoopjTask extends  IntentService
         implements  Response.Listener<JSONObject>, Response.ErrorListener{
 
     private static final String BASE_URL = "http://192.168.1.4/pruebaBD/JSONConsulta.php?";
-    private SharedPreferences logeo;
+    private static final String BASE_URL_LIMPIEZA = "http://192.168.1.4/pruebaBD/limpiarAlerta.php?";
 
     public MyLoopjTask() {
         super("test-service");
@@ -60,11 +61,6 @@ public class MyLoopjTask extends  IntentService
                 + "last_name="+pass
                 +"&first_name="+usuario;
 
-
-       /* String url = "http://192.168.1.11/tesis/JSONConsulta.php?"
-                + "clave="+infoPassword
-                +"&user="+infoUser;     */
-
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
                 null,this,this);
 
@@ -83,13 +79,15 @@ public class MyLoopjTask extends  IntentService
         try {
             jsonObject = json.getJSONObject(0);
 
+            int consultaAlerta = jsonObject.optInt("salary");
             int idConsultado = jsonObject.optInt("id");
 
-            if (idConsultado == 0){
-                Log.d("CONSULTAHTTP", "No se encontro ");
+            if (consultaAlerta == 0){
+                Log.d("CONSULTAHTTP", "No hay alerta ");
             }
             else{
-                Log.d("CONSULTAHTTP", "El id es "+ idConsultado );
+                Log.d("CONSULTAHTTP", "Hat alerta ");
+                limpiarBnaderaAlerta(idConsultado);
                 showNotification();
             }
         } catch (JSONException e) {
@@ -100,6 +98,24 @@ public class MyLoopjTask extends  IntentService
     @Override
     public void onErrorResponse(VolleyError error) {
 
+    }
+
+    private void limpiarBnaderaAlerta(int id) {
+        RequestQueue request = Volley.newRequestQueue(this);
+        String url = BASE_URL_LIMPIEZA
+                +"id="+id;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        // Add the request to the RequestQueue.
+        request.add(stringRequest);
     }
 
     private void showNotification() {

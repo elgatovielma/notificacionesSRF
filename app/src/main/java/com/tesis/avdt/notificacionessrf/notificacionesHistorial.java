@@ -2,7 +2,9 @@ package com.tesis.avdt.notificacionessrf;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -23,8 +25,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,7 +38,6 @@ public class notificacionesHistorial extends AppCompatActivity
 
     private RecyclerView mRecyclerView;
     private adapterAlerta mAdapter;
-    private historialOpenHelper mDB;
     private SharedPreferences log;
     private ArrayList<alertaItem> listaAlerta;
     private RequestQueue request;
@@ -55,10 +54,6 @@ public class notificacionesHistorial extends AppCompatActivity
         mRecyclerView = findViewById(R.id.recyclerview);
         cargarLista();
 
-        mDB = new historialOpenHelper(this);
-
-
-
         // Give the recycler view a default layout manager.
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -73,14 +68,13 @@ public class notificacionesHistorial extends AppCompatActivity
 
             informacion = extra.getStringArray("Mew");
             infoTitulo = extra.getString("Mewtwo");
-            mDB.insert(informacion,infoTitulo);
             mAdapter.notifyDataSetChanged();
         }
     }
 
     @Override
     public void onResponse(JSONObject response) {
-        alertaItem  evento=null;
+        alertaItem  evento;
 
         JSONArray json=response.optJSONArray("employees");
         try {
@@ -92,6 +86,7 @@ public class notificacionesHistorial extends AppCompatActivity
                 evento.setId(jsonObject.optInt("id"));
                 evento.setFecha(jsonObject.optString("first_name"));
                 evento.setHora(jsonObject.optString("last_name"));
+                evento.setFoto(jsonObject.optString("imagen"));
                 listaAlerta.add(evento);
             }
             // Create an mAdapter and supply the data to be displayed.
@@ -102,12 +97,23 @@ public class notificacionesHistorial extends AppCompatActivity
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
     public void onErrorResponse(VolleyError error) {
 
+    }
+
+    private void cargarLista() {
+        listaAlerta.clear();
+        request = Volley.newRequestQueue(this);
+
+        String url = "http://192.168.1.4/pruebaBD/JSONConsultaimagen.php";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
+                null,this,this);
+
+        // Add the request to the RequestQueue.
+        request.add(jsonObjectRequest);
     }
 
 
@@ -123,7 +129,6 @@ public class notificacionesHistorial extends AppCompatActivity
             info = extras.getStringArray("Mew");
             infoTitulo = extras.getString("Mewtwo");
 
-            mDB.insert(info,infoTitulo);
             mAdapter.notifyDataSetChanged();
 
             Log.d("TEMP", "Tab Number: " + info[0]);
@@ -134,16 +139,6 @@ public class notificacionesHistorial extends AppCompatActivity
         }
     }
 
-    private void cargarLista() {
-        request = Volley.newRequestQueue(this);
-
-        String url = "http://192.168.1.4/pruebaBD/JSONConsultaUsuarios.php";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
-                null,this,this);
-
-        // Add the request to the RequestQueue.
-        request.add(jsonObjectRequest);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -169,6 +164,11 @@ public class notificacionesHistorial extends AppCompatActivity
     private void logout() {
         Toast.makeText(getBaseContext(),
                 "Hasta pronto", Toast.LENGTH_SHORT).show();
+
+        NotificationManager notificationManager = (NotificationManager)
+                getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(0);
+
         Intent i = new Intent(getBaseContext(), MainActivity.class);
         Intent intentAlarm = new Intent("com.example.android.standup.ACTION_NOTIFY");
         PendingIntent sender = PendingIntent.getBroadcast(this,

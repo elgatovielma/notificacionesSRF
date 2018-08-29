@@ -6,7 +6,7 @@ public class alertaItem {
     private String mensaje;
     private String fecha;
     private String hora;
-    private int foto;
+    private String foto;
 
     public alertaItem(){}
 
@@ -42,11 +42,11 @@ public class alertaItem {
         this.hora = hora;
     }
 
-    public int getFoto() {
+    public String getFoto() {
         return foto;
     }
 
-    public void setFoto(int foto) {
+    public void setFoto(String foto) {
         this.foto = foto;
     }
 }
