@@ -41,6 +41,8 @@ public class notificacionesHistorial extends AppCompatActivity
     private SharedPreferences log;
     private ArrayList<alertaItem> listaAlerta;
     private RequestQueue request;
+    private static final String urlConsultaImagenes =
+            "http://192.168.1.4/tesis/JSONConsultaimagen.php";
 
     public notificacionesHistorial(){}
 
@@ -76,7 +78,7 @@ public class notificacionesHistorial extends AppCompatActivity
     public void onResponse(JSONObject response) {
         alertaItem  evento;
 
-        JSONArray json=response.optJSONArray("employees");
+        JSONArray json=response.optJSONArray("empleado");
         try {
             for (int i=0;i<json.length();i++){
                 evento=new alertaItem();
@@ -84,9 +86,8 @@ public class notificacionesHistorial extends AppCompatActivity
                 jsonObject=json.getJSONObject(i);
 
                 evento.setId(jsonObject.optInt("id"));
-                evento.setFecha(jsonObject.optString("first_name"));
-                evento.setHora(jsonObject.optString("last_name"));
-                evento.setFoto(jsonObject.optString("imagen"));
+                evento.setFecha(jsonObject.optString("fecha_hora"));
+                evento.setFoto(jsonObject.optString("nombreimagen"));
                 listaAlerta.add(evento);
             }
             // Create an mAdapter and supply the data to be displayed.
@@ -108,9 +109,8 @@ public class notificacionesHistorial extends AppCompatActivity
         listaAlerta.clear();
         request = Volley.newRequestQueue(this);
 
-        String url = "http://192.168.1.4/pruebaBD/JSONConsultaimagen.php";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
-                null,this,this);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                urlConsultaImagenes, null,this,this);
 
         // Add the request to the RequestQueue.
         request.add(jsonObjectRequest);

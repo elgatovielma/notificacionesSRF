@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity
     private SharedPreferences logeo;
     private MyLoopjTask accion;
     private static final String ACTION_NOTIFY = "com.example.android.standup.ACTION_NOTIFY";
-    private static final String BASE_URL = "http://192.168.1.4/pruebaBD/JSONConsulta.php?";
+    private static final String BASE_URL = "http://192.168.1.4/tesis/JSONConsulta.php?";
     private String infoUser;
     private String infoPassword;
 
@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity
     public void login(View view) {
         progreso = new ProgressDialog(this);
         progreso.setMessage("Cargando...");
+        progreso.show();
         Log.d("Pruebaboton", "Entra ");
         infoUser = user.getText().toString().trim();
         infoPassword = password.getText().toString().trim();
@@ -83,8 +84,8 @@ public class MainActivity extends AppCompatActivity
         request = Volley.newRequestQueue(this);
 
         String url =BASE_URL
-                + "last_name="+infoPassword
-                +"&first_name="+infoUser;
+                + "password="+infoPassword
+                +"&usuario="+infoUser;
         /*
         String url = "http://192.168.1.11/tesis/JSONConsulta.php?"
                 + "clave="+infoPassword
@@ -101,8 +102,7 @@ public class MainActivity extends AppCompatActivity
              public void onResponse(JSONObject response) {
                  progreso.hide();
 
-                 //JSONArray json = response.optJSONArray("empleados");
-                 JSONArray json = response.optJSONArray("employees");
+                 JSONArray json = response.optJSONArray("empleado");
                  JSONObject jsonObject;
 
                  try {
@@ -158,8 +158,8 @@ public class MainActivity extends AppCompatActivity
     private void MyAlarmManagerStart() {
         // Construct an intent that will execute the AlarmReceiver
         Intent iService = new Intent(ACTION_NOTIFY);
-        iService.putExtra("first_name",infoUser);
-        iService.putExtra("last_name",infoPassword);
+        iService.putExtra("usuario",infoUser);
+        iService.putExtra("password",infoPassword);
 
         PendingIntent sender = PendingIntent.getBroadcast(this,
                 123456789,iService, 0);

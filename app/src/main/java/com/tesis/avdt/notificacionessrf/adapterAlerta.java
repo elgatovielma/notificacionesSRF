@@ -40,7 +40,7 @@ public class adapterAlerta extends RecyclerView.Adapter<adapterAlerta.ViewHolder
         mInflater = LayoutInflater.from(context);
         mContext = context;
         this.cargaEventos = cargaEventos;
-        //Permite la carga de las imagenes de la bd remota
+        //Permite la carga de las imagenes desde la bd remota
         request = Volley.newRequestQueue(mContext);
     }
 
@@ -64,7 +64,6 @@ public class adapterAlerta extends RecyclerView.Adapter<adapterAlerta.ViewHolder
         }
 
         holder.fechaItemView.setText(cargaEventos.get(position).getFecha());
-        holder.horaItemView.setText(cargaEventos.get(position).getHora());
         holder.iconoItemView.setOnClickListener(
                 new MyButtonOnClickListener(cargaEventos
                         .get(position).getId(), null) {
@@ -77,12 +76,11 @@ public class adapterAlerta extends RecyclerView.Adapter<adapterAlerta.ViewHolder
     }
 
     private void cargarImagenesWebService(String rutaFoto,final ViewHolderAlertas holder ) {
-        String urlImagen = "http://192.168.1.4/pruebaBD/" + rutaFoto;
+        String urlImagen = "http://192.168.1.4/tesis/" + rutaFoto;
 
-        if (urlImagen.contains("http://192.168.1.4/pruebaBD/null")){
-            urlImagen = "http://192.168.1.4/pruebaBD/imgUsuarios/loadingimage.png";
+        if (urlImagen.contains("http://192.168.1.4/tesis/null")){
+            holder.iconoHistorialItemView.setImageResource(R.drawable.loadingimage);
         }
-
         ImageRequest imageRequest = new ImageRequest(urlImagen,
                 new Response.Listener<Bitmap>() {
             @Override
@@ -97,6 +95,7 @@ public class adapterAlerta extends RecyclerView.Adapter<adapterAlerta.ViewHolder
             }
         });
         request.add(imageRequest);
+
     }
 
 
@@ -112,7 +111,7 @@ public class adapterAlerta extends RecyclerView.Adapter<adapterAlerta.ViewHolder
         // Set the dialog title.
         myAlertBuilder.setTitle("Llamada");
         // Set the dialog message.
-        myAlertBuilder.setMessage("¿Seguro que desea llamar?");
+        myAlertBuilder.setMessage("¿Seguro que desea llamar a seguridad?");
 
         // Add the buttons.
         myAlertBuilder.setPositiveButton("Si",
@@ -145,14 +144,13 @@ public class adapterAlerta extends RecyclerView.Adapter<adapterAlerta.ViewHolder
 
     public class ViewHolderAlertas extends RecyclerView.ViewHolder {
 
-        public final TextView fechaItemView, horaItemView, alertaItemView;
+        public final TextView fechaItemView, alertaItemView;
         public final ImageView iconoItemView, iconoHistorialItemView;
 
         public ViewHolderAlertas(View itemView) {
             super(itemView);
             alertaItemView = itemView.findViewById(R.id.alertatexto);
             fechaItemView = itemView.findViewById(R.id.fechafinalizacion);
-            horaItemView = itemView.findViewById(R.id.horafinalizacion);
             iconoItemView = itemView.findViewById(R.id.idImagen);
             iconoHistorialItemView = itemView.findViewById(R.id.idimageneshistorial);
         }

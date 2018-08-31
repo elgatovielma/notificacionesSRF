@@ -33,8 +33,8 @@ import cz.msebera.android.httpclient.Header;
 public class MyLoopjTask extends  IntentService
         implements  Response.Listener<JSONObject>, Response.ErrorListener{
 
-    private static final String BASE_URL = "http://192.168.1.4/pruebaBD/JSONConsulta.php?";
-    private static final String BASE_URL_LIMPIEZA = "http://192.168.1.4/pruebaBD/limpiarAlerta.php?";
+    private static final String BASE_URL = "http://192.168.1.4/tesis/JSONConsulta.php?";
+    private static final String BASE_URL_LIMPIEZA = "http://192.168.1.4/tesis/limpiarAlerta.php?";
 
     public MyLoopjTask() {
         super("test-service");
@@ -45,8 +45,8 @@ public class MyLoopjTask extends  IntentService
         Bundle extra = intent.getExtras();
         Log.d("EXTRASNOT", "Enter in EXTRAS");
         if(extra != null) {
-            ejecutarPedido(extra.getString("first_name"),
-                    extra.getString("last_name"));
+            ejecutarPedido(extra.getString("usuario"),
+                    extra.getString("password"));
         } else {
             Log.d("EXTRAS", "Extras are NULL");
         }
@@ -58,8 +58,8 @@ public class MyLoopjTask extends  IntentService
         Log.d("PARAMETRONAME", usuario);
         RequestQueue request = Volley.newRequestQueue(this);
         String url = BASE_URL
-                + "last_name="+pass
-                +"&first_name="+usuario;
+                + "password="+pass
+                +"&usuario="+usuario;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
                 null,this,this);
@@ -72,14 +72,13 @@ public class MyLoopjTask extends  IntentService
     @Override
     public void onResponse(JSONObject response) {
         Log.d("onResponse", "Enter in onSuccess");
-        //JSONArray json = response.optJSONArray("empleados");
-        JSONArray json = response.optJSONArray("employees");
+        JSONArray json = response.optJSONArray("empleado");
         JSONObject jsonObject;
 
         try {
             jsonObject = json.getJSONObject(0);
 
-            int consultaAlerta = jsonObject.optInt("salary");
+            int consultaAlerta = jsonObject.optInt("acceso");
             int idConsultado = jsonObject.optInt("id");
 
             if (consultaAlerta == 0){
@@ -125,8 +124,6 @@ public class MyLoopjTask extends  IntentService
 
         String titulo = "Alerta de seguridad!";
         String mensaje = "Una persona no autorizada utilizo el sistema";
-        //i.putExtra("Mew", informacion);
-        //i.putExtra("Mewtwo",titulo);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
