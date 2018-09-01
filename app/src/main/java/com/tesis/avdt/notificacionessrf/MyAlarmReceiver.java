@@ -8,21 +8,22 @@ import android.util.Log;
 
 public class MyAlarmReceiver extends BroadcastReceiver {
 
+    /*
+    Explicacion:
+    * */
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Intent i = new Intent(context, MyLoopjTask.class);
-        // Add extras to the bundle
 
+        // Se agregan los extras al bundle
         Bundle extra = intent.getExtras();
-        Log.d("EXTRASNOT", "Enter in EXTRAS");
         if(extra != null) {
             i.putExtra("usuario",extra.getString("usuario"));
             i.putExtra("password",extra.getString("password"));
         } else {
-            Log.d("EXTRAS", "Extras are NULL");
         }
-        // Start the service
+        // Comienza el servicio
         context.startService(i);
-        Log.d("BROADCASTRECEIVE", "BROADCAST ENTRA");
     }
 }

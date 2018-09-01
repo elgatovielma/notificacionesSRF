@@ -42,11 +42,9 @@ public class MainActivity extends AppCompatActivity
         implements  Response.Listener<JSONObject>, Response.ErrorListener{
 
     private EditText user, password;
-    private Button login;
     private ProgressDialog progreso;
     private RequestQueue request;
     private SharedPreferences logeo;
-    private MyLoopjTask accion;
     private static final String ACTION_NOTIFY = "com.example.android.standup.ACTION_NOTIFY";
     private static final String BASE_URL = "http://192.168.1.4/tesis/JSONConsulta.php?";
     private String infoUser;
@@ -65,11 +63,8 @@ public class MainActivity extends AppCompatActivity
             Intent inte = new Intent(this, notificacionesHistorial.class);
             startActivity(inte);
         }
-        accion = new MyLoopjTask();
-
         user = findViewById(R.id.usernameinicio);
         password = findViewById(R.id.passwordinicio);
-        login = findViewById(R.id.buttonlogin);
     }
 
 
@@ -86,15 +81,11 @@ public class MainActivity extends AppCompatActivity
         String url =BASE_URL
                 + "password="+infoPassword
                 +"&usuario="+infoUser;
-        /*
-        String url = "http://192.168.1.11/tesis/JSONConsulta.php?"
-                + "clave="+infoPassword
-                +"&user="+infoUser;*/
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
                 null,this,this);
 
-        // Add the request to the RequestQueue.
+        // Se agrega ppedido a la cola de pedidos.
         request.add(jsonObjectRequest);
 
     }
@@ -132,22 +123,22 @@ public class MainActivity extends AppCompatActivity
 
                  String message = null;
                  if (volleyError instanceof NetworkError) {
-                     message = "Cannot connect to Internet..." +
-                             "Please check your connection!";
+                     message = "No se puede conectar al Internet..." +
+                             "Por favor verifique la coneccion";
                  } else if (volleyError instanceof ServerError) {
-                     message = "The server could not be found. " +
-                             "Please try again after some time!!";
+                     message = "El servidor no pudo ser enconrado. " +
+                             "Por favor intente mas tarde!!";
                  } else if (volleyError instanceof AuthFailureError) {
-                     message = "Cannot connect to Internet..." +
-                             "Please check your connection!";
+                     message = "No se puede conectar al Internet..." +
+                             "Por favor verifique la coneccion!";
                  } else if (volleyError instanceof ParseError) {
-                     message = "Parsing error! Please try again after some time!!";
+                     message = "Error de de infromacion, por favor intente luego!";
                  } else if (volleyError instanceof NoConnectionError) {
-                     message = "Cannot connect to Internet..." +
-                             "Please check your connection!";
+                     message = "No se puede conectar al Internet..." +
+                             "Por favor verifique la coneccion!";
                  } else if (volleyError instanceof TimeoutError) {
-                     message = "Connection TimeOut! " +
-                             "Please check your internet connection.";
+                     message = "Tiempo fuera de la coneccion! " +
+                             "Por favor verifique su coneccion a Internet.";
                  }
                  Toast.makeText(getBaseContext(),
                          message, Toast.LENGTH_SHORT).show();
@@ -156,7 +147,7 @@ public class MainActivity extends AppCompatActivity
 
 
     private void MyAlarmManagerStart() {
-        // Construct an intent that will execute the AlarmReceiver
+        // Se construye un intent para el alarmManger
         Intent iService = new Intent(ACTION_NOTIFY);
         iService.putExtra("usuario",infoUser);
         iService.putExtra("password",infoPassword);
@@ -167,6 +158,11 @@ public class MainActivity extends AppCompatActivity
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime(), 5000, sender);
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 
 }

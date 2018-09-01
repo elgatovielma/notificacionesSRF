@@ -34,6 +34,8 @@ public class adapterAlerta extends RecyclerView.Adapter<adapterAlerta.ViewHolder
     private final LayoutInflater mInflater;
     private Context mContext;
     private RequestQueue request;
+    private static final String   RUTA_IMAGENES = "http://192.168.1.4/tesis/";
+    private static final String   RUTA_NULL = "http://192.168.1.4/tesis/null";
 
 
     public adapterAlerta(Context context, List<alertaItem>  cargaEventos ) {
@@ -54,7 +56,6 @@ public class adapterAlerta extends RecyclerView.Adapter<adapterAlerta.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull final ViewHolderAlertas holder, int position) {
 
-        //final alertaItem current = mDB.query(position);
         if (cargaEventos.get(position).getFoto()!=null){
             Log.d("Pruebaimagen", "Entra carga imagen  ");
             cargarImagenesWebService(cargaEventos.get(position).getFoto(), holder);
@@ -76,9 +77,9 @@ public class adapterAlerta extends RecyclerView.Adapter<adapterAlerta.ViewHolder
     }
 
     private void cargarImagenesWebService(String rutaFoto,final ViewHolderAlertas holder ) {
-        String urlImagen = "http://192.168.1.4/tesis/" + rutaFoto;
+        String urlImagen = RUTA_IMAGENES + rutaFoto;
 
-        if (urlImagen.contains("http://192.168.1.4/tesis/null")){
+        if (urlImagen.contains(RUTA_NULL)){
             holder.iconoHistorialItemView.setImageResource(R.drawable.loadingimage);
         }
         ImageRequest imageRequest = new ImageRequest(urlImagen,
@@ -95,9 +96,7 @@ public class adapterAlerta extends RecyclerView.Adapter<adapterAlerta.ViewHolder
             }
         });
         request.add(imageRequest);
-
     }
-
 
     @Override
     public int getItemCount() {
@@ -108,16 +107,14 @@ public class adapterAlerta extends RecyclerView.Adapter<adapterAlerta.ViewHolder
 
         AlertDialog.Builder myAlertBuilder =
                 new AlertDialog.Builder(v.getContext());
-        // Set the dialog title.
         myAlertBuilder.setTitle("Llamada");
-        // Set the dialog message.
         myAlertBuilder.setMessage("¿Seguro que desea llamar a seguridad?");
 
         // Add the buttons.
         myAlertBuilder.setPositiveButton("Si",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // User clicked OK button.
+                        // Oprimir boton "si".
                         String phone = "+582124511483";
                         Intent intent = new Intent(Intent.ACTION_CALL,
                                 Uri.fromParts("tel", phone, null));
@@ -128,13 +125,11 @@ public class adapterAlerta extends RecyclerView.Adapter<adapterAlerta.ViewHolder
                             return;
                         }
                         mContext.startActivity(intent); } });
-
         myAlertBuilder.setNegativeButton("Cancelar",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // User cancelled the dialog.
+                        // Dialogo de cancelar
                         } });
-
         myAlertBuilder.show();
     }
 

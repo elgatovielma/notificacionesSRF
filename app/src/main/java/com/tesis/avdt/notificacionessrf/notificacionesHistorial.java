@@ -1,14 +1,12 @@
 package com.tesis.avdt.notificacionessrf;
 
-import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,9 +17,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -30,7 +34,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class notificacionesHistorial extends AppCompatActivity
@@ -41,6 +44,7 @@ public class notificacionesHistorial extends AppCompatActivity
     private SharedPreferences log;
     private ArrayList<alertaItem> listaAlerta;
     private RequestQueue request;
+    private ProgressDialog progreso;
     private static final String urlConsultaImagenes =
             "http://192.168.1.4/tesis/JSONConsultaimagen.php";
 
@@ -52,30 +56,17 @@ public class notificacionesHistorial extends AppCompatActivity
         setContentView(R.layout.activity_notificaciones_historial);
         log = getSharedPreferences("login",MODE_PRIVATE);
         listaAlerta = new ArrayList<>();
-        // Create recycler view.
+        // Crear recycler View
         mRecyclerView = findViewById(R.id.recyclerview);
         cargarLista();
 
-        // Give the recycler view a default layout manager.
+        // Dar al recycler view un manejador de layout por defecto
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        String[] informacion;
-        String infoTitulo;
-
-        Intent in = getIntent();
-        Bundle extra = in.getExtras();
-
-        if (extra != null){
-            Log.d("TEMP", "SALUT ");
-
-            informacion = extra.getStringArray("Mew");
-            infoTitulo = extra.getString("Mewtwo");
-            mAdapter.notifyDataSetChanged();
-        }
     }
 
     @Override
     public void onResponse(JSONObject response) {
+        progreso.hide();
         alertaItem  evento;
 
         JSONArray json=response.optJSONArray("empleado");
@@ -90,9 +81,9 @@ public class notificacionesHistorial extends AppCompatActivity
                 evento.setFoto(jsonObject.optString("nombreimagen"));
                 listaAlerta.add(evento);
             }
-            // Create an mAdapter and supply the data to be displayed.
+            // Crear un adaptador para mostrar la data en el recycler view.
             mAdapter = new adapterAlerta(this,listaAlerta);
-            // Connect the mAdapter with the recycler view.
+            // Conectar el adaptador con el recycler view.
             mRecyclerView.setAdapter(mAdapter);
 
         } catch (JSONException e) {
@@ -101,18 +92,42 @@ public class notificacionesHistorial extends AppCompatActivity
     }
 
     @Override
-    public void onErrorResponse(VolleyError error) {
-
+    public void onErrorResponse(VolleyError volleyError) {
+        progreso.hide();
+        String message = null;
+        if (volleyError instanceof NetworkError) {
+            message = "No se puede conectar al Internet..." +
+                    "Por favor verifique la coneccion";
+        } else if (volleyError instanceof ServerError) {
+            message = "El servidor no pudo ser enconrado. " +
+                    "Por favor intente mas tarde!!";
+        } else if (volleyError instanceof AuthFailureError) {
+            message = "No se puede conectar al Internet..." +
+                    "Por favor verifique la coneccion!";
+        } else if (volleyError instanceof ParseError) {
+            message = "Error de de infromacion, por favor intente luego!";
+        } else if (volleyError instanceof NoConnectionError) {
+            message = "No se puede conectar al Internet..." +
+                    "Por favor verifique la coneccion!";
+        } else if (volleyError instanceof TimeoutError) {
+            message = "Tiempo fuera de la coneccion! " +
+                    "Por favor verifique su coneccion a Internet.";
+        }
+        Toast.makeText(getBaseContext(),
+                message, Toast.LENGTH_SHORT).show();
     }
 
     private void cargarLista() {
+        progreso = new ProgressDialog(this);
+        progreso.setMessage("Cargando...");
+        progreso.show();
         listaAlerta.clear();
         request = Volley.newRequestQueue(this);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 urlConsultaImagenes, null,this,this);
 
-        // Add the request to the RequestQueue.
+        // Agregar solicitud a la cola de solicitudes
         request.add(jsonObjectRequest);
     }
 
@@ -120,23 +135,7 @@ public class notificacionesHistorial extends AppCompatActivity
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Bundle extras = intent.getExtras();
         cargarLista();
-        String[] info;
-        String infoTitulo;
-        Log.d("TEMP", "BONJOUR ");
-        if(extras != null) {
-            info = extras.getStringArray("Mew");
-            infoTitulo = extras.getString("Mewtwo");
-
-            mAdapter.notifyDataSetChanged();
-
-            Log.d("TEMP", "Tab Number: " + info[0]);
-
-        } else {
-            Log.d("TEMP", "Extras are NULL");
-
-        }
     }
 
 

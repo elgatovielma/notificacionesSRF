@@ -31,6 +31,13 @@ import org.json.JSONObject;
 import cz.msebera.android.httpclient.Header;
 
 public class MyLoopjTask extends  IntentService
+        /*Informacion de como utilizar un ItentService sacado de
+        https://code.tutsplus.com/tutorials/android-fundamentals-intentservice-basics--mobile-6183
+        Autor:Desconocido
+
+        Explicacion: El intentService es un servicio que se activa a traves de un intent y se cierra
+        automaticamente luego de su ejecucion, corre en el background de la app,
+        por tanto incluso se ejecuta a pesar de que la app este cerrada*/
         implements  Response.Listener<JSONObject>, Response.ErrorListener{
 
     private static final String BASE_URL = "http://192.168.1.4/tesis/JSONConsulta.php?";
@@ -43,19 +50,14 @@ public class MyLoopjTask extends  IntentService
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         Bundle extra = intent.getExtras();
-        Log.d("EXTRASNOT", "Enter in EXTRAS");
         if(extra != null) {
             ejecutarPedido(extra.getString("usuario"),
                     extra.getString("password"));
         } else {
-            Log.d("EXTRAS", "Extras are NULL");
         }
-        //ejecutarPedido("Alberto","Vielma");
     }
 
     public void ejecutarPedido(String usuario, String pass){
-        Log.d("SERVICE", "Service is running");
-        Log.d("PARAMETRONAME", usuario);
         RequestQueue request = Volley.newRequestQueue(this);
         String url = BASE_URL
                 + "password="+pass
@@ -68,10 +70,8 @@ public class MyLoopjTask extends  IntentService
         request.add(jsonObjectRequest);
     }
 
-
     @Override
     public void onResponse(JSONObject response) {
-        Log.d("onResponse", "Enter in onSuccess");
         JSONArray json = response.optJSONArray("empleado");
         JSONObject jsonObject;
 
@@ -113,7 +113,6 @@ public class MyLoopjTask extends  IntentService
             public void onErrorResponse(VolleyError error) {
             }
         });
-        // Add the request to the RequestQueue.
         request.add(stringRequest);
     }
 

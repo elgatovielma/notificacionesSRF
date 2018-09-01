@@ -1,6 +1,6 @@
 package com.tesis.avdt.notificacionessrf;
 
-import android.app.AlertDialog;
+
 import android.view.View;
 
 public class MyButtonOnClickListener implements View.OnClickListener{
@@ -14,7 +14,7 @@ public class MyButtonOnClickListener implements View.OnClickListener{
     }
 
     public void onClick(View v) {
-        // Implemented adapterAlerta
+        //Implementado en adapterAlerts
     }
 
 }
