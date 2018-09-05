@@ -36,6 +36,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/*
+Basado en los apuntes del curso Programación en Ambiente Android,
+de la Escuela de Ingeniería de Telecomunicaciones
+de la Universidad Católica Andrés Bello. Caracas
+Autor: José Gregorio Castillo Pacheco
+ */
+
 public class notificacionesHistorial extends AppCompatActivity
         implements  Response.Listener<JSONObject>, Response.ErrorListener{
 

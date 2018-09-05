@@ -30,14 +30,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import cz.msebera.android.httpclient.Header;
 
-public class MyLoopjTask extends  IntentService
-        /*Informacion de como utilizar un ItentService sacado de
-        https://code.tutsplus.com/tutorials/android-fundamentals-intentservice-basics--mobile-6183
-        Autor:Desconocido
+/*
+Basado en la documentacion encontrada en la pagagina code.tutsplus
+Link: https://code.tutsplus.com/tutorials/android-fundamentals-intentservice-basics--mobile-6183
+Autor: Desconocido
+ */
 
-        Explicacion: El intentService es un servicio que se activa a traves de un intent y se cierra
-        automaticamente luego de su ejecucion, corre en el background de la app,
-        por tanto incluso se ejecuta a pesar de que la app este cerrada*/
+public class MyLoopjTask extends  IntentService
         implements  Response.Listener<JSONObject>, Response.ErrorListener{
 
     private static final String BASE_URL = "http://192.168.1.4/tesis/JSONConsulta.php?";

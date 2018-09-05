@@ -1,9 +1,15 @@
 package com.tesis.avdt.notificacionessrf;
 
+/*
+Basado en los apuntes del curso Programación en Ambiente Android,
+de la Escuela de Ingeniería de Telecomunicaciones
+de la Universidad Católica Andrés Bello. Caracas
+Autor: José Gregorio Castillo Pacheco
+ */
+
 public class alertaItem {
 
     private int id;
-    private String mensaje;
     private String fecha;
     private String hora;
     private String foto;

@@ -28,6 +28,13 @@ import com.android.volley.toolbox.Volley;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+Basado en los apuntes del curso Programación en Ambiente Android,
+de la Escuela de Ingeniería de Telecomunicaciones
+de la Universidad Católica Andrés Bello. Caracas
+Autor: José Gregorio Castillo Pacheco
+ */
+
 public class adapterAlerta extends RecyclerView.Adapter<adapterAlerta.ViewHolderAlertas> {
 
     private List<alertaItem> cargaEventos;

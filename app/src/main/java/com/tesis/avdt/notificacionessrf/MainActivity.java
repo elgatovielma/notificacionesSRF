@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
@@ -36,7 +37,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 
+/*
+Basado en los apuntes del curso Programación en Ambiente Android,
+de la Escuela de Ingeniería de Telecomunicaciones
+de la Universidad Católica Andrés Bello. Caracas
+Autor: José Gregorio Castillo Pacheco
+ */
 
 public class MainActivity extends AppCompatActivity
         implements  Response.Listener<JSONObject>, Response.ErrorListener{
@@ -80,10 +89,13 @@ public class MainActivity extends AppCompatActivity
 
         String url =BASE_URL
                 + "password="+infoPassword
-                +"&usuario="+infoUser;
+                + "&usuario="+infoUser;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
                 null,this,this);
+
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(8000, 0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         // Se agrega ppedido a la cola de pedidos.
         request.add(jsonObjectRequest);
