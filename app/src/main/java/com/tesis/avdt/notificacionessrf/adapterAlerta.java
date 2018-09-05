@@ -1,5 +1,12 @@
 package com.tesis.avdt.notificacionessrf;
 
+/*
+Basado en los apuntes del curso Programación en Ambiente Android,
+de la Escuela de Ingeniería de Telecomunicaciones
+de la Universidad Católica Andrés Bello. Caracas
+Autor: José Gregorio Castillo Pacheco
+ */
+
 
 import android.content.Context;
 import android.content.DialogInterface;
