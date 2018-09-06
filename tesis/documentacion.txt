@@ -1,0 +1,4 @@
+
+//Basado en la documentacion encontrada en la pagina github
+//Link: https://github.com/chenaoh/TutorialWebService/tree/master/archivos/ejemploBDRemota
+//Autor: Cristian Henao
