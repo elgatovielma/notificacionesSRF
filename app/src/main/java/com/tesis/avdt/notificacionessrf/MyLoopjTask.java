@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -28,6 +29,10 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import cz.msebera.android.httpclient.Header;
 
 /*
@@ -39,8 +44,8 @@ Autor: Desconocido
 public class MyLoopjTask extends  IntentService
         implements  Response.Listener<JSONObject>, Response.ErrorListener{
 
-    private static final String BASE_URL = "http://192.168.1.4/tesis/JSONConsulta.php?";
-    private static final String BASE_URL_LIMPIEZA = "http://192.168.1.4/tesis/limpiarAlerta.php?";
+    private static final String BASE_URL = "http://192.168.1.4/tesis/JSONConsulta.php";
+    private static final String BASE_URL_LIMPIEZA = "http://192.168.1.4/tesis/limpiarAlerta.php";
 
     public MyLoopjTask() {
         super("test-service");
@@ -58,12 +63,15 @@ public class MyLoopjTask extends  IntentService
 
     public void ejecutarPedido(String usuario, String pass){
         RequestQueue request = Volley.newRequestQueue(this);
-        String url = BASE_URL
-                + "password="+pass
-                +"&usuario="+usuario;
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
-                null,this,this);
+        Map<String, String> params = new HashMap();
+        params.put("password", pass);
+        params.put("usuario", usuario);
+
+        JSONObject parameters = new JSONObject(params);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, BASE_URL,
+                parameters ,this,this);
 
         // Add the request to the RequestQueue.
         request.add(jsonObjectRequest);
@@ -98,11 +106,10 @@ public class MyLoopjTask extends  IntentService
 
     }
 
-    private void limpiarBnaderaAlerta(int id) {
+    private void limpiarBnaderaAlerta(final Integer id) {
         RequestQueue request = Volley.newRequestQueue(this);
-        String url = BASE_URL_LIMPIEZA
-                +"id="+id;
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, BASE_URL_LIMPIEZA,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -111,7 +118,14 @@ public class MyLoopjTask extends  IntentService
             @Override
             public void onErrorResponse(VolleyError error) {
             }
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", id.toString());
+                return params;
+            }
+        };
         request.add(stringRequest);
     }
 

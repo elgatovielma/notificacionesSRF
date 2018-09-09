@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity
     private RequestQueue request;
     private SharedPreferences logeo;
     private static final String ACTION_NOTIFY = "com.example.android.standup.ACTION_NOTIFY";
-    private static final String BASE_URL = "http://192.168.1.4/tesis/JSONConsulta.php?";
+    private static final String BASE_URL = "http://192.168.1.4/tesis/JSONConsulta.php";
     private String infoUser;
     private String infoPassword;
 
@@ -87,15 +87,14 @@ public class MainActivity extends AppCompatActivity
 
         request = Volley.newRequestQueue(this);
 
-        String url =BASE_URL
-                + "password="+infoPassword
-                + "&usuario="+infoUser;
+        Map<String, String> params = new HashMap();
+        params.put("password", infoPassword);
+        params.put("usuario", infoUser);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
-                null,this,this);
-
-        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(8000, 0,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        JSONObject parameters = new JSONObject(params);
+        Log.d("JSON", parameters.toString());
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, BASE_URL,
+                parameters,this,this);
 
         // Se agrega ppedido a la cola de pedidos.
         request.add(jsonObjectRequest);
@@ -117,7 +116,7 @@ public class MainActivity extends AppCompatActivity
                      }
                      else{
                          Toast.makeText(getBaseContext(),
-                                 "Bienvenio", Toast.LENGTH_SHORT).show();
+                                 "Bienvenido", Toast.LENGTH_SHORT).show();
 
                          logeo.edit().putBoolean("logged",true).apply();
                          MyAlarmManagerStart();
