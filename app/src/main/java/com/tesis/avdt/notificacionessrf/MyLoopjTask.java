@@ -44,8 +44,8 @@ Autor: Desconocido
 public class MyLoopjTask extends  IntentService
         implements  Response.Listener<JSONObject>, Response.ErrorListener{
 
-    private static final String BASE_URL = "http://192.168.1.4/tesis/JSONConsulta.php";
-    private static final String BASE_URL_LIMPIEZA = "http://192.168.1.4/tesis/limpiarAlerta.php";
+    private static final String BASE_URL = "http://192.168.1.11/tesis/JSONConsulta.php";
+    private static final String BASE_URL_LIMPIEZA = "http://192.168.1.11/tesis/limpiarAlerta.php";
 
     public MyLoopjTask() {
         super("test-service");

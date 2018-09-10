@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity
     private RequestQueue request;
     private SharedPreferences logeo;
     private static final String ACTION_NOTIFY = "com.example.android.standup.ACTION_NOTIFY";
-    private static final String BASE_URL = "http://192.168.1.4/tesis/JSONConsulta.php";
+    private static final String BASE_URL = "http://192.168.1.11/tesis/JSONConsulta.php";
     private String infoUser;
     private String infoPassword;
 
