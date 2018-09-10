@@ -53,7 +53,7 @@ public class notificacionesHistorial extends AppCompatActivity
     private RequestQueue request;
     private ProgressDialog progreso;
     private static final String urlConsultaImagenes =
-            "http://192.168.1.11/tesis/JSONConsultaimagen.php";
+            "http://192.168.1.4/tesis/JSONConsultaimagen.php";
 
     public notificacionesHistorial(){}
 
