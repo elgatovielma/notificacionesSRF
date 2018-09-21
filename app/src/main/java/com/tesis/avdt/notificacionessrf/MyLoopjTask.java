@@ -63,7 +63,6 @@ public class MyLoopjTask extends  IntentService
 
     public void ejecutarPedido(String usuario, String pass){
         RequestQueue request = Volley.newRequestQueue(this);
-
         Map<String, String> params = new HashMap();
         params.put("password", pass);
         params.put("usuario", usuario);

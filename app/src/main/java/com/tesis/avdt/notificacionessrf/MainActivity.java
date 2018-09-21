@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity
     private static final String BASE_URL = "http://192.168.1.11/tesis/JSONConsulta.php";
     private String infoUser;
     private String infoPassword;
+    private SeguridadSHA securePass;
 
 
 
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity
         }
         user = findViewById(R.id.usernameinicio);
         password = findViewById(R.id.passwordinicio);
+        securePass = new SeguridadSHA();
     }
 
 
@@ -81,9 +83,10 @@ public class MainActivity extends AppCompatActivity
         progreso = new ProgressDialog(this);
         progreso.setMessage("Cargando...");
         progreso.show();
-        Log.d("Pruebaboton", "Entra ");
         infoUser = user.getText().toString().trim();
         infoPassword = password.getText().toString().trim();
+        infoPassword = securePass.getSecurePassword(infoPassword);
+        Log.d("Pruebaboton",  infoPassword);
 
         request = Volley.newRequestQueue(this);
 
@@ -168,7 +171,7 @@ public class MainActivity extends AppCompatActivity
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime(), 5000, sender);
+                SystemClock.elapsedRealtime(), 30000, sender);
     }
 
     @Override

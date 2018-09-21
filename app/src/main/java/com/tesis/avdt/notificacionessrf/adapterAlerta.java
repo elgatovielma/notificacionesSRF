@@ -48,8 +48,8 @@ public class adapterAlerta extends RecyclerView.Adapter<adapterAlerta.ViewHolder
     private final LayoutInflater mInflater;
     private Context mContext;
     private RequestQueue request;
-    private static final String   RUTA_IMAGENES = "http://192.168.1.11/tesis/";
-    private static final String   RUTA_NULL = "http://192.168.1.11/tesis/null";
+    private static final String   RUTA_IMAGENES = "http://192.168.1.11/tesis/imgUsuarios/";
+    private static final String   RUTA_NULL = "http://192.168.1.11/tesis/imgUsuarios/null";
 
 
     public adapterAlerta(Context context, List<alertaItem>  cargaEventos ) {
